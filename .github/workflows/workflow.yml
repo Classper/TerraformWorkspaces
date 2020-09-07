@@ -6,7 +6,7 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, features/* ]
   pull_request:
     branches: [ master ]
 
@@ -22,30 +22,26 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Set environmental variable with branch
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          trimmedBranch=${GITHUB_REF##*/}
+          perfectBranch="f-"$trimmedBranch
+          echo perfectBranch = $perfectBranch
+          echo "::set-env name=WORKSPACE::$perfectBranch"
+        env:
+          WORKSPACE: $perfectBranch
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.1.0
 
-      - name: Terraform Init
-        run: terraform init $SOURCE_DIR
-
-      - name: Set environmental variable with branch
-        run: |
-          echo ${GITHUB_REF##*/features\//f-}
-        env:
-          WORKSPACE: ${GITHUB_REF##*/features\//f-}
+      - name: Terraform create WORKSPACE
+        run: terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Validate
-        id: validate
-        run: |
-          terraform workspace new env.BRANCH_NAME
-          terraform validate /src/dev/ -no-color
+        run: terraform validate $SOURCE_DIR/src/dev/ -no-color
+
+      - name: Terraform Init
+        run: terraform init $SOURCE_DIR/src/dev/
+
+      - name: Terraform plan
+        run: terraform plan $SOURCE_DIR
