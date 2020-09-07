@@ -34,6 +34,7 @@ jobs:
 
       - name: Set environmental variable with branch
         run: |
+          echo ${GITHUB_REF##*},
           trimmedBranch=${GITHUB_REF##*}
           echo $trimmedBranch
           perfectBranch=${trimmedBranch/features\//f-}
@@ -41,11 +42,11 @@ jobs:
         env:
           WORKSPACE: $perfectBranch
 
+      - name: Terraform create WORKSPACE
+        run: terraform workspace new env.WORKSPACE
+
       - name: Terraform Validate
-        id: validate
-        run: |
-          terraform workspace new env.BRANCH_NAME
-          terraform validate /src/dev/ -no-color
+        run: terraform validate /src/dev/ -no-color
 
       - name: Terraform Init
         run: terraform init $SOURCE_DIR
