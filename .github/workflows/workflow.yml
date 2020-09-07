@@ -29,7 +29,7 @@ jobs:
           perfectBranch="f-"$trimmedBranch
           echo perfectBranch = $perfectBranch
           echo "::set-env name=WORKSPACE::$perfectBranch"
-          echo "::set-env name=SOURCE_DIR::{{ github.workspace }}/infra/dev"
+          echo "::set-env name=SOURCE_DIR::{{ GITHUB_WORKSPACE }}/infra/dev"
           echo SourceDir = $SOURCE_DIR
 
       - name: Setup Terraform
