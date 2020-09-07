@@ -33,17 +33,11 @@ jobs:
           echo test, and deploy your project.
 
       - name: Set environmental variable with branch
-        run: |
-          echo ${GITHUB_REF##*},
-          trimmedBranch=${GITHUB_REF##*}
-          echo $trimmedBranch
-          perfectBranch=${trimmedBranch/features\//f-}
-          echo $perfectBranch
         env:
-          WORKSPACE: $perfectBranch
+          WORKSPACE: ${GITHUB_REF##*}
 
       - name: Terraform create WORKSPACE
-        run: terraform workspace new env.WORKSPACE
+        run: terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Validate
         run: terraform validate /src/dev/ -no-color
