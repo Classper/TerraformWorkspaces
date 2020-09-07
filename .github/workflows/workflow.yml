@@ -32,15 +32,9 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      - name: Set environmental variable with branch
-        run:
-          echo ${GITHUB_REF##*}
-        env:
-          WORKSPACE: ${GITHUB_REF##*}
-
       - name: Terraform create WORKSPACE
-        run: terraform workspace new ${{ env.WORKSPACE }}
-
+        run: terraform workspace new ${GITHUB_REF}
+        
       - name: Terraform Validate
         run: terraform validate /src/dev/ -no-color
 
