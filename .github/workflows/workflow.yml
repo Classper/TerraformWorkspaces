@@ -48,6 +48,5 @@ jobs:
       - name: Terraform Validate
         run: terraform validate $SOURCE_DIR -no-color
 
-
       - name: Terraform plan
         run: terraform plan $SOURCE_DIR
