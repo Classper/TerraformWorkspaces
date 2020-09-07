@@ -52,4 +52,4 @@ jobs:
         run: terraform plan $SOURCE_DIR
 
       - name: Terraform Apply
-        run: terraform plan $SOURCE_DIR
+        run: terraform apply $SOURCE_DIR --auto-approve
