@@ -29,6 +29,7 @@ jobs:
           perfectBranch="f-"$trimmedBranch
           echo perfectBranch = $perfectBranch
           echo "::set-env name=WORKSPACE::$perfectBranch"
+          echo "::set-env name=SOURCE_DIR::{{ github.workspace }}/infra/dev
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.1.0
@@ -38,10 +39,10 @@ jobs:
         run: terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Validate
-        run: terraform validate $SOURCE_DIR/infra/dev/ -no-color
+        run: terraform validate $SOURCE_DIR -no-color
 
       - name: Terraform Init
-        run: terraform init $SOURCE_DIR/infra/dev/
+        run: terraform init $SOURCE_DIR
 
       - name: Terraform plan
         run: terraform plan $SOURCE_DIR
