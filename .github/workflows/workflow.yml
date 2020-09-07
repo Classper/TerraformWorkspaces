@@ -34,7 +34,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1.1.0
 
       - name: Terraform create WORKSPACE
-        run: terraform workspace new ${GITHUB_REF}
+        run: terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Validate
         run: terraform validate $SOURCE_DIR/src/dev/ -no-color
