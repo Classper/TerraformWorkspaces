@@ -25,23 +25,23 @@ jobs:
       - name: Set environmental variable with branch
         run: |
           trimmedBranch=${GITHUB_REF##*/}
+          echo "::set-env name=branch::$trimmedBranch"
           perfectBranch="f-"$trimmedBranch
           echo perfectBranch = $perfectBranch
           echo "::set-env name=WORKSPACE::$perfectBranch"
-        env:
-          WORKSPACE: $perfectBranch
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.1.0
 
       - name: Terraform create WORKSPACE
+        if: github.ref == 'refs/heads/features/*' && github.event_name == 'push'
         run: terraform workspace new ${{ env.WORKSPACE }}
 
       - name: Terraform Validate
-        run: terraform validate $SOURCE_DIR/src/dev/ -no-color
+        run: terraform validate $SOURCE_DIR/infra/dev/ -no-color
 
       - name: Terraform Init
-        run: terraform init $SOURCE_DIR/src/dev/
+        run: terraform init $SOURCE_DIR/infra/dev/
 
       - name: Terraform plan
         run: terraform plan $SOURCE_DIR

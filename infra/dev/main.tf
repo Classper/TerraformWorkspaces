@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "main" {
-  name     = "myTFResourceGroup"
+  name     = "rg-simple-01-${terraform.workspace}"
   location = "West Europe"
 }
 
