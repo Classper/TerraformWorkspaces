@@ -42,8 +42,8 @@ jobs:
         run: terraform init $SOURCE_DIR
 
       - name: Terraform create WORKSPACE
-        if: github.ref == 'refs/heads/features/*' && github.event_name == 'push'
-        run: terraform workspace new ${{ env.WORKSPACE }} -no-color
+        if: contains('refs/heads/features', github.ref) && github.event_name == 'push'
+        run: terraform workspace select ${{ env.WORKSPACE }} -no-color || terraform workspace new ${{ env.WORKSPACE }} -no-color
 
       - name: Terraform Validate
         run: terraform validate $SOURCE_DIR -no-color
@@ -53,3 +53,9 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply --auto-approve $SOURCE_DIR
+
+      - name: Test and function
+        if: github.ref == 'refs/heads/features/*'
+        run: |
+          curl -GET <ip_address>/health
+          terraform destroy 
