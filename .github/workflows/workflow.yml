@@ -38,11 +38,14 @@ jobs:
       - name: Terraform Init
         run: terraform init $SOURCE_DIR
 
-      - name: Put branch name in correct format
-        run: echo ${GITHUB_REF##*/}
+      - name: Set environmental variable with branch
+        run: |
+          echo ${GITHUB_REF##*/features\//f-}
+        env:
+          WORKSPACE: ${GITHUB_REF##*/features\//f-}
 
       - name: Terraform Validate
         id: validate
         run: |
           terraform workspace new env.BRANCH_NAME
-          terraform validate /home/runner/work/actionWithTerraform/ -no-color
+          terraform validate /src/dev/ -no-color
