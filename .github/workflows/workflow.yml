@@ -16,7 +16,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    env:
+        SOURCE_DIR: ${{ github.workspace }}/infra/dev
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -29,8 +30,6 @@ jobs:
           perfectBranch="f-"$trimmedBranch
           echo perfectBranch = $perfectBranch
           echo "::set-env name=WORKSPACE::$perfectBranch"
-          echo "::set-env name=SOURCE_DIR::{{ GITHUB_WORKSPACE }}/infra/dev"
-          echo SourceDir = $SOURCE_DIR
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.1.0
