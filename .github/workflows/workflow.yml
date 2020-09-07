@@ -27,6 +27,7 @@ jobs:
           trimmedBranch=${GITHUB_REF##*/}
           perfectBranch="f-"$trimmedBranch
           echo perfectBranch = $perfectBranch
+          echo "::set-env name=WORKSPACE::$perfectBranch"
         env:
           WORKSPACE: $perfectBranch
 
