@@ -34,9 +34,12 @@ jobs:
 
       - name: Set environmental variable with branch
         run: |
-          echo ${GITHUB_REF##*/features\//f-}
+          trimmedBranch = ${GITHUB_REF##*}
+          echo $trimmedBranch
+          perfectBranch = ${trimmedBranch/features\//f-}
+          echo $perfectBranch
         env:
-          WORKSPACE: ${GITHUB_REF##*/features\//f-}
+          WORKSPACE: $perfectBranch
 
       - name: Terraform Validate
         id: validate
