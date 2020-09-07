@@ -25,7 +25,7 @@ jobs:
       - name: Set environmental variable with branch
         run: |
           echo Ref = ${GITHUB_REF##*/},
-          trimmedBranch=${GITHUB_REF##*}
+          trimmedBranch=${GITHUB_REF##*/}
           echo $trimmedBranch
           perfectBranch=${trimmedBranch/features\//f-}
           echo $perfectBranch
