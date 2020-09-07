@@ -33,6 +33,8 @@ jobs:
           echo test, and deploy your project.
 
       - name: Set environmental variable with branch
+        run:
+          echo ${GITHUB_REF##*}
         env:
           WORKSPACE: ${GITHUB_REF##*}
 
