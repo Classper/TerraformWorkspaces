@@ -39,7 +39,7 @@ jobs:
         run: terraform init $SOURCE_DIR
 
       - name: Print branch name
-        run: echo ${{$GITHUB_WORKSPACE}}
+        run: echo ${GITHUB_REF##*/}
 
       - name: Terraform Validate
         id: validate
